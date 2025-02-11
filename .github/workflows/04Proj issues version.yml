@@ -6,7 +6,7 @@ jobs:
     steps:
       - name: GetContextObjectFromGithub
         run: echo "${{toJson(github)}}"
-  GetCodeAndInstallDependencies:
+  Get-Lint-Test-and-Build:
     needs: GetContext
     runs-on: ubuntu-latest
     steps:
@@ -18,17 +18,16 @@ jobs:
           node-version: 18
       - name: Install Dependencies
         run: npm ci
-  RunLintAndTest:
-    needs: GetCodeAndInstallDependencies
-    runs-on: ubuntu-latest
-    steps:
       - name: Run Lint check
         run: npm run lint
       - name: Run Test
         run: npm test
-  BuildNow:
-    needs: RunLintAndTest
-    runs-on: ubuntu-latest
-    steps:
       - name: Build
         run: npm run build
+  ShowStuff:
+    needs: Get-Lint-Test-and-Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: showrepository
+        run: echo "${{toJson(github.repositoryUrl)}}"
+        
