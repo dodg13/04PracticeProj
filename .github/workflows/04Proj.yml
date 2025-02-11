@@ -1,5 +1,5 @@
 name: DeploymentProj
-on: [push, issues]
+on: push
 jobs:
   GetCode:
     runs-on: ubuntu-latest
