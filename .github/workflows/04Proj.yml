@@ -8,8 +8,7 @@ jobs:
       uses: actions/checkout@latest
       -name: Install Node JS
       uses: actions/setup-node@vs
-        with:
-          node-version: 18
+        node-version: 18
       -name: Install Dependencies
       run: npm ci
       -name: Run Test
