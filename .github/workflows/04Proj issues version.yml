@@ -1,0 +1,34 @@
+name: DeploymentProj
+on: issues
+jobs:
+  GetContext:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GetContextObjectFromGithub
+        run: echo "${{toJson(github)}}"
+  GetCodeAndInstallDependencies:
+    needs: GetContext
+    runs-on: ubuntu-latest
+    steps:
+      - name: GetCode
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install Dependencies
+        run: npm ci
+  RunLintAndTest:
+    needs: GetCodeAndInstallDependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Lint check
+        run: npm run lint
+      - name: Run Test
+        run: npm test
+  BuildNow:
+    needs: RunLintAndTest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        run: npm run build
